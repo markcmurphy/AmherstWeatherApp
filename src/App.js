@@ -15,16 +15,21 @@ class App extends Component {
       currentTemp: undefined,
       todaysHigh: undefined,
       todaysLow: undefined,
-      currentWeather: undefined
+      currentWeather: undefined,
+      forecastPeriod: undefined,
+      forecastWeather: undefined,
+      forecastTemp: undefined
     };
     this.getCurrentWeather = this.getCurrentWeather.bind(this);
+    this.getWeatherForecast = this.getWeatherForecast.bind(this);
+    this.getWeather = this.getWeather.bind(this);
   }
 
   getCurrentWeather(event) {
     const zip = event.target.elements.zip.value;
     const country = event.target.elements.country.value;
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${zip},${country}&appid=${API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?q=${zip},${country}&units=imperial&appid=${API_KEY}`
     )
       .then(result => {
         return result.json();
@@ -37,14 +42,39 @@ class App extends Component {
           todaysLow: jsonResult.main.temp_min,
           currentWeather: jsonResult.weather[0].description
         });
-        console.log(this.state.location);
+        console.log(jsonResult);
       }, event.preventDefault());
+  }
+
+  getWeatherForecast (event) {
+    const zip = event.target.elements.zip.value;
+    const country = event.target.elements.country.value;
+    fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?q=${zip},${country}&units=imperial&appid=${API_KEY}`
+    )
+      .then(result => {
+        return result.json();
+      })
+      .then(jsonResult => {
+        this.setState({
+          forecastPeriod: jsonResult.list[1].dt_txt,
+          forecastWeather: jsonResult.list[1].weather[0].description,
+          forecastTemp: jsonResult.list[1].forecastTemp
+        });
+        console.log(jsonResult);
+        console.log(this.state.forecastPeriod);
+      }, event.preventDefault());
+  }
+
+  getWeather(e){
+    this.getCurrentWeather(e);
+    this.getWeatherForecast(e);
   }
 
   render() {
     return (
       <div>
-        <Input loadCurrentWeather={this.getCurrentWeather} />
+        <Input loadCurrentWeather={this.getWeather} />
         <WeatherCurrent
         location={this.state.location}
         currentTemp={this.state.currentTemp}
@@ -52,7 +82,11 @@ class App extends Component {
         todaysLow={this.state.todaysLow}
         currentWeather={this.state.currentWeather}
          />
-        <WeatherForecast />
+        <WeatherForecast
+        forecastPeriod={this.state.forecastPeriod}
+        forecastWeather={this.state.forecastWeather}
+        forecastTemp={this.state.forecastTemp}
+        />
       </div>
     );
   }

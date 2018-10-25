@@ -3,7 +3,8 @@ import React from 'react';
 const WeatherForecast = (props) => {
   return (
       <div>
-      <p>Weather Forecast Here</p>
+      {props.forecastPeriod && <p> Forecast for {props.forecastPeriod} </p>}
+      {props.forecastWeather && <p> {props.forecastWeather} </p>}
       </div>
     );
 }
