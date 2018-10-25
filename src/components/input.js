@@ -3,7 +3,10 @@ import React from "react";
 const Input = props => {
   return (
     <div>
-      User location input here <input />
+      <form onSubmit={props.loadCurrentWeather}>
+        <input type="text" name="zip" placeholder="ZIP Code" />
+        <button>Get Current Weather</button>
+      </form>
     </div>
   );
 };
