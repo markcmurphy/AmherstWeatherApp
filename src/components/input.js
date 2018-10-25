@@ -5,6 +5,7 @@ const Input = props => {
     <div>
       <form onSubmit={props.loadCurrentWeather}>
         <input type="text" name="zip" placeholder="ZIP Code" />
+        <input type="text" name="country" placeholder="Country Code" />
         <button>Get Current Weather</button>
       </form>
     </div>

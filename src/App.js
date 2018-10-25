@@ -10,15 +10,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: "",
+      inputValue: '',
       weather: []
     };
     this.getCurrentWeather = this.getCurrentWeather.bind(this);
   }
 
   getCurrentWeather(event) {
+    const zip = event.target.elements.zip.value;
+    const country = event.target.elements.country.value;
     fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=78759,us&appid=${API_KEY}`
+      `http://api.openweathermap.org/data/2.5/weather?q=${zip},${country}&appid=${API_KEY}`
     )
       .then(result => {
         return result.json();
@@ -27,7 +29,7 @@ class App extends Component {
         this.setState({
           weather: [jsonResult.weather]
         });
-        console.log(this.state.weather);
+        console.log(jsonResult);
       }, event.preventDefault());
   }
 
