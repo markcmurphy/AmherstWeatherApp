@@ -11,7 +11,11 @@ class App extends Component {
     super(props);
     this.state = {
       inputValue: '',
-      weather: []
+      location: '',
+      currentTemp: undefined,
+      todaysHigh: undefined,
+      todaysLow: undefined,
+      currentWeather: undefined
     };
     this.getCurrentWeather = this.getCurrentWeather.bind(this);
   }
@@ -27,9 +31,13 @@ class App extends Component {
       })
       .then(jsonResult => {
         this.setState({
-          weather: [jsonResult.weather]
+          location: jsonResult.name,
+          currentTemp: jsonResult.main.temp,
+          todaysHigh: jsonResult.main.temp_max,
+          todaysLow: jsonResult.main.temp_min,
+          currentWeather: jsonResult.weather[0].description
         });
-        console.log(jsonResult);
+        console.log(this.state.location);
       }, event.preventDefault());
   }
 
@@ -37,7 +45,13 @@ class App extends Component {
     return (
       <div>
         <Input loadCurrentWeather={this.getCurrentWeather} />
-        <WeatherCurrent />
+        <WeatherCurrent
+        location={this.state.location}
+        currentTemp={this.state.currentTemp}
+        todaysHigh={this.state.todaysHigh}
+        todaysLow={this.state.todaysLow}
+        currentWeather={this.state.currentWeather}
+         />
         <WeatherForecast />
       </div>
     );
