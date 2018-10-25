@@ -24,7 +24,7 @@ class App extends Component {
     const zip = event.target.elements.zip.value;
     const country = event.target.elements.country.value;
     fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${zip},${country}&appid=${API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?q=${zip},${country}&appid=${API_KEY}`
     )
       .then(result => {
         return result.json();
