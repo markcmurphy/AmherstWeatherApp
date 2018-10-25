@@ -10,13 +10,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputValue: '',
-      location: '',
+      inputValue: "",
+      location: "",
       currentTemp: undefined,
       todaysHigh: undefined,
       todaysLow: undefined,
       currentWeather: undefined,
-      forecastPeriod: undefined,
+      forecastPeriod: [],
       forecastWeather: undefined,
       forecastTemp: undefined
     };
@@ -46,27 +46,31 @@ class App extends Component {
       }, event.preventDefault());
   }
 
-  getWeatherForecast (event) {
+  getWeatherForecast(event) {
     const zip = event.target.elements.zip.value;
     const country = event.target.elements.country.value;
+
     fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?q=${zip},${country}&units=imperial&appid=${API_KEY}`
+      `https://api.openweathermap.org/data/2.5/forecast/daily?q=${zip},${country}&units=imperial&appid=${API_KEY}`
     )
       .then(result => {
         return result.json();
       })
       .then(jsonResult => {
+        let updatedForecast = this.state.forecastPeriod.slice();
+        for (let i = 0; i < 5; i++) {
+          updatedForecast.push(jsonResult.list[i].dt);
+        }
+        console.log(updatedForecast);
         this.setState({
-          forecastPeriod: jsonResult.list[1].dt_txt,
-          forecastWeather: jsonResult.list[1].weather[0].description,
-          forecastTemp: jsonResult.list[1].forecastTemp
+          forecastPeriod: updatedForecast
         });
         console.log(jsonResult);
         console.log(this.state.forecastPeriod);
       }, event.preventDefault());
   }
 
-  getWeather(e){
+  getWeather(e) {
     this.getCurrentWeather(e);
     this.getWeatherForecast(e);
   }
@@ -76,16 +80,16 @@ class App extends Component {
       <div>
         <Input loadCurrentWeather={this.getWeather} />
         <WeatherCurrent
-        location={this.state.location}
-        currentTemp={this.state.currentTemp}
-        todaysHigh={this.state.todaysHigh}
-        todaysLow={this.state.todaysLow}
-        currentWeather={this.state.currentWeather}
-         />
+          location={this.state.location}
+          currentTemp={this.state.currentTemp}
+          todaysHigh={this.state.todaysHigh}
+          todaysLow={this.state.todaysLow}
+          currentWeather={this.state.currentWeather}
+        />
         <WeatherForecast
-        forecastPeriod={this.state.forecastPeriod}
-        forecastWeather={this.state.forecastWeather}
-        forecastTemp={this.state.forecastTemp}
+          forecastPeriod={this.state.forecastPeriod}
+          forecastWeather={this.state.forecastWeather}
+          forecastTemp={this.state.forecastTemp}
         />
       </div>
     );

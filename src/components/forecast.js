@@ -1,12 +1,15 @@
-import React from 'react';
+import React from "react";
 
-const WeatherForecast = (props) => {
+const WeatherForecast = props => {
   return (
-      <div>
-      {props.forecastPeriod && <p> Forecast for {props.forecastPeriod} </p>}
-      {props.forecastWeather && <p> {props.forecastWeather} </p>}
-      </div>
-    );
-}
+    <div>
+      <ul>
+        {props.forecastPeriod.map((item, i) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 export default WeatherForecast;
