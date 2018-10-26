@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Input from "./components/input";
 import WeatherCurrent from "./components/current";
 import WeatherForecast from "./components/forecast";
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
 const API_KEY = `${process.env.REACT_APP_WEATHER_API_KEY}`;
@@ -18,7 +19,8 @@ class App extends Component {
       currentWeather: undefined,
       forecastPeriod: [],
       forecastWeather: [],
-      forecastTemp: undefined
+      forecastTemp: undefined,
+      forecastIcon: []
     };
     this.getCurrentWeather = this.getCurrentWeather.bind(this);
     this.getWeatherForecast = this.getWeatherForecast.bind(this);
@@ -59,16 +61,17 @@ class App extends Component {
       .then(jsonResult => {
         let updatedForecast = this.state.forecastPeriod.slice();
         let updatedForecastWeather = this.state.forecastWeather.slice();
-
+        let updatedForecastIcon = this.state.forecastIcon.slice();
         for (let i = 1; i < 6; i++) {
           updatedForecast.push(jsonResult.list[i].dt);
           updatedForecast.push(jsonResult.list[i].weather[0].description);
+          updatedForecast.push(jsonResult.list[i].weather[0].icon);
         }
 
         function seperateArr (arr) {
           const newArr = [];
-          for (let i=0; i<10; i+=2) {
-            var sliceArr = arr.slice(i, i + 2);
+          for (let i=0; i<15; i+=3) {
+            var sliceArr = arr.slice(i, i + 3);
             newArr.push(sliceArr)
           }
           return newArr;
@@ -79,10 +82,12 @@ class App extends Component {
 
         this.setState({
           forecastPeriod: day,
-          forecastWeather: updatedForecastWeather
+          forecastWeather: updatedForecastWeather,
+          forecastIcon:updatedForecastIcon
         });
-        // console.log(jsonResult);
-        // console.log(this.state.forecastPeriod);
+        console.log(jsonResult);
+        // console.log(this.state.forecastIcon);
+        console.log(this.state.forecastPeriod);
       }, event.preventDefault());
   }
 
@@ -93,6 +98,7 @@ class App extends Component {
 
   render() {
     return (
+      <body class="container">
       <div>
         <Input loadCurrentWeather={this.getWeather} />
         <WeatherCurrent
@@ -108,6 +114,8 @@ class App extends Component {
           forecastTemp={this.state.forecastTemp}
         />
       </div>
+      </body>
+
     );
   }
 }

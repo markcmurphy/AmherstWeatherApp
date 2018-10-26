@@ -11,13 +11,16 @@ function convertDate(x) {
 
   return (
     <div>
-  <ul>
     {props.forecastPeriod.map((item, i) => (
-      <li key={item}>{convertDate(item[0])} - {item[1]}</li>
+      <div class="card">
+      <div class="card-body">
+      <h5 key={item} class="card-title">{convertDate(item[0])}</h5>
+      <div class="card-text">{item[1]} </div>
+      <div class="card-text">{item[2]} </div>
+      </div>
+      </div>
     ))}
-  </ul>
 </div>
-
   );
 };
 
