@@ -17,7 +17,7 @@ class App extends Component {
       todaysLow: undefined,
       currentWeather: undefined,
       forecastPeriod: [],
-      forecastWeather: undefined,
+      forecastWeather: [],
       forecastTemp: undefined
     };
     this.getCurrentWeather = this.getCurrentWeather.bind(this);
@@ -42,7 +42,7 @@ class App extends Component {
           todaysLow: jsonResult.main.temp_min,
           currentWeather: jsonResult.weather[0].description
         });
-        console.log(jsonResult);
+        // console.log(jsonResult);
       }, event.preventDefault());
   }
 
@@ -58,15 +58,31 @@ class App extends Component {
       })
       .then(jsonResult => {
         let updatedForecast = this.state.forecastPeriod.slice();
-        for (let i = 0; i < 5; i++) {
+        let updatedForecastWeather = this.state.forecastWeather.slice();
+
+        for (let i = 1; i < 6; i++) {
           updatedForecast.push(jsonResult.list[i].dt);
+          updatedForecast.push(jsonResult.list[i].weather[0].description);
         }
-        console.log(updatedForecast);
+
+        function seperateArr (arr) {
+          const newArr = [];
+          for (let i=0; i<10; i+=2) {
+            var sliceArr = arr.slice(i, i + 2);
+            newArr.push(sliceArr)
+          }
+          return newArr;
+        }
+
+        let day = seperateArr(updatedForecast);
+        // console.log(day);
+
         this.setState({
-          forecastPeriod: updatedForecast
+          forecastPeriod: day,
+          forecastWeather: updatedForecastWeather
         });
-        console.log(jsonResult);
-        console.log(this.state.forecastPeriod);
+        // console.log(jsonResult);
+        // console.log(this.state.forecastPeriod);
       }, event.preventDefault());
   }
 
