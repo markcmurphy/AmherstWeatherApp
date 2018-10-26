@@ -101,7 +101,7 @@ class App extends Component {
 
   render() {
     return (
-      <body className={this.state.darkToggled ? 'dark': null}>
+      <div className={this.state.darkToggled ? 'dark': null}>
       <div>
         <Input loadCurrentWeather={this.getWeather}
         theme={this.toggleSwitch}
@@ -120,7 +120,7 @@ class App extends Component {
           forecastTemp={this.state.forecastTemp}
         />
       </div>
-      </body>
+      </div>
 
     );
   }
