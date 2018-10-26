@@ -12,10 +12,10 @@ function convertDate(x) {
   return (
     <div>
     {props.forecastPeriod.map((item, i) => (
-      <div class="card">
-      <div class="card-body">
-      <h5 key={item} class="card-title">{convertDate(item[0])}</h5>
-      <div class="card-text">{item[1]} </div>
+      <div className="card">
+      <div className="card-body">
+      <h5 key={item} className="card-title">{convertDate(item[0])}</h5>
+      <div className="card-text">{item[1]} </div>
       <img src={item[2]} alt="weather icon" />
       </div>
       </div>
