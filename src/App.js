@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Input from "./components/input";
 import WeatherCurrent from "./components/current";
 import WeatherForecast from "./components/forecast";
+import Demo from "./components/geolocated.js";
+import {geolocated} from 'react-geolocated';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
@@ -21,18 +23,47 @@ class App extends Component {
       forecastWeather: [],
       forecastTemp: undefined,
       forecastIcon: [],
-      darkToggled: false
+      darkToggled: false,
+      latitude: undefined,
+      longitude: undefined
     };
     this.getCurrentWeather = this.getCurrentWeather.bind(this);
     this.getWeatherForecast = this.getWeatherForecast.bind(this);
     this.getWeather = this.getWeather.bind(this);
     this.toggleSwitch = this.toggleSwitch.bind(this);
+    this.getGeo = this.getGeo.bind(this);
   }
 
   toggleSwitch(e) {
     this.setState({
       darkToggled: !this.state.darkToggled
     });
+  }
+
+  getGeo() {
+    console.log(geolocated());
+
+
+  }
+
+
+  getDefaultWeather(event,lat,lon) {
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${lat},${lon}&units=imperial&appid=${API_KEY}`
+    )
+      .then(result => {
+        return result.json();
+      })
+      .then(jsonResult => {
+        console.log(jsonResult);
+        this.setState({
+          location: jsonResult.name,
+          currentTemp: jsonResult.main.temp,
+          todaysHigh: jsonResult.main.temp_max,
+          todaysLow: jsonResult.main.temp_min,
+          currentWeather: jsonResult.weather[0].description
+        });
+      }, event.preventDefault());
   }
 
   getCurrentWeather(event) {
@@ -99,9 +130,14 @@ class App extends Component {
     this.getWeatherForecast(e);
   }
 
+
+
   render() {
     return (
       <div className={this.state.darkToggled ? 'dark': null}>
+      <Demo
+      getGeo = {this.getGeo}
+      />
       <div>
         <Input loadCurrentWeather={this.getWeather}
         theme={this.toggleSwitch}
