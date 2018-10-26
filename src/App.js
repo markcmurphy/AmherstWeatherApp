@@ -72,7 +72,7 @@ class App extends Component {
         for (let i = 1; i < 6; i++) {
           updatedForecast.push(jsonResult.list[i].dt);
           updatedForecast.push(jsonResult.list[i].weather[0].description);
-          updatedForecast.push(`http://openweathermap.org/img/w/${jsonResult.list[i].weather[0].icon}.png`);
+          updatedForecast.push(`https://openweathermap.org/img/w/${jsonResult.list[i].weather[0].icon}.png`);
         }
 
         function seperateArr (arr) {
