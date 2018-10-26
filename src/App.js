@@ -20,11 +20,19 @@ class App extends Component {
       forecastPeriod: [],
       forecastWeather: [],
       forecastTemp: undefined,
-      forecastIcon: []
+      forecastIcon: [],
+      darkToggled: false
     };
     this.getCurrentWeather = this.getCurrentWeather.bind(this);
     this.getWeatherForecast = this.getWeatherForecast.bind(this);
     this.getWeather = this.getWeather.bind(this);
+    this.toggleSwitch = this.toggleSwitch.bind(this);
+  }
+
+  toggleSwitch(e) {
+    this.setState({
+      darkToggled: !this.state.darkToggled
+    });
   }
 
   getCurrentWeather(event) {
@@ -44,7 +52,6 @@ class App extends Component {
           todaysLow: jsonResult.main.temp_min,
           currentWeather: jsonResult.weather[0].description
         });
-        // console.log(jsonResult);
       }, event.preventDefault());
   }
 
@@ -65,7 +72,7 @@ class App extends Component {
         for (let i = 1; i < 6; i++) {
           updatedForecast.push(jsonResult.list[i].dt);
           updatedForecast.push(jsonResult.list[i].weather[0].description);
-          updatedForecast.push(jsonResult.list[i].weather[0].icon);
+          updatedForecast.push(`http://openweathermap.org/img/w/${jsonResult.list[i].weather[0].icon}.png`);
         }
 
         function seperateArr (arr) {
@@ -78,16 +85,12 @@ class App extends Component {
         }
 
         let day = seperateArr(updatedForecast);
-        // console.log(day);
 
         this.setState({
           forecastPeriod: day,
           forecastWeather: updatedForecastWeather,
           forecastIcon:updatedForecastIcon
         });
-        console.log(jsonResult);
-        // console.log(this.state.forecastIcon);
-        console.log(this.state.forecastPeriod);
       }, event.preventDefault());
   }
 
@@ -98,9 +101,12 @@ class App extends Component {
 
   render() {
     return (
-      <body class="container">
+      <body className={this.state.darkToggled ? 'dark': null}>
       <div>
-        <Input loadCurrentWeather={this.getWeather} />
+        <Input loadCurrentWeather={this.getWeather}
+        theme={this.toggleSwitch}
+        toggledState={this.state.darkToggled}
+        />
         <WeatherCurrent
           location={this.state.location}
           currentTemp={this.state.currentTemp}

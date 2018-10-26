@@ -6,10 +6,11 @@ const Input = props => {
       <div class="row">
       <div class="col-sm">
       <form onSubmit={props.loadCurrentWeather}>
-        <input class="form-control" type="text" name="zip" placeholder="ZIP Code" />
-        <input class="form-control" type="text" name="country" placeholder="Country Code" />
-        <button class="btn btn-primary">Get Current Weather</button>
+        <input className={`form-control ${props.toggledState ? 'dark': null}`} type="text" name="zip" placeholder="ZIP Code" />
+        <input className={`form-control ${props.toggledState ? 'dark': null}`} type="text" name="country" placeholder="Country Code" />
+        <button class="btn btn-primary">Get Weather</button>
       </form>
+      <button class="btn btn-primary" onClick={props.theme}>Toggle Dark</button>
       </div>
       </div>
       </div>
