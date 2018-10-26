@@ -16,7 +16,7 @@ function convertDate(x) {
       <div class="card-body">
       <h5 key={item} class="card-title">{convertDate(item[0])}</h5>
       <div class="card-text">{item[1]} </div>
-      <img src={item[2]} />
+      <img src={item[2]} alt="weather icon" />
       </div>
       </div>
     ))}
